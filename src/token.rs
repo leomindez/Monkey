@@ -6,6 +6,12 @@ pub enum TokenType {
     INT,
     ASSIGN,
     PLUS,
+    MINUS,
+    BANG,
+    ASTERISK,
+    SLASH,
+    LT,
+    GT,
     COMMA,
     SEMICOLON,
     LPAREN,
@@ -14,6 +20,13 @@ pub enum TokenType {
     RBRACE,
     FUNCTION,
     LET,
+    TRUE,
+    FALSE,
+    IF,
+    ELSE,
+    RETURN,
+    EQ,
+    NOTEQ,
 }
 
 #[derive(Debug, PartialEq)]

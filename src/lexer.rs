@@ -30,14 +30,33 @@ impl<'a> Lexer<'a> {
         self.read_position += 1;
     }
 
+    fn peak_char(&mut self) -> char {
+        if self.read_position >= self.input.len() {
+            return '\x00';
+        } else {
+            return self.input.as_bytes()[self.read_position] as char;
+        }
+    }
+
     pub fn next_token(&mut self) -> token::Token {
         self.skip_whitespace();
 
         let token = match self.current_char {
-            '=' => token::Token {
-                token_type: token::TokenType::ASSIGN,
-                literal: String::from(self.current_char),
-            },
+            '=' => {
+                if self.peak_char() == '=' {
+                    let prev_char = self.current_char;
+                    self.read_char();
+                    token::Token {
+                        token_type: token::TokenType::EQ,
+                        literal: format!("{}{}", prev_char, self.current_char),
+                    }
+                } else {
+                    token::Token {
+                        token_type: token::TokenType::ASSIGN,
+                        literal: String::from(self.current_char),
+                    }
+                }
+            }
             ';' => token::Token {
                 token_type: token::TokenType::SEMICOLON,
                 literal: String::from(self.current_char),
@@ -56,6 +75,41 @@ impl<'a> Lexer<'a> {
             },
             '+' => token::Token {
                 token_type: token::TokenType::PLUS,
+                literal: String::from(self.current_char),
+            },
+            '-' => token::Token {
+                token_type: token::TokenType::MINUS,
+                literal: String::from(self.current_char),
+            },
+            '!' => {
+                if self.peak_char() == '=' {
+                    let prev_char = self.current_char;
+                    self.read_char();
+                    token::Token {
+                        token_type: token::TokenType::NOTEQ,
+                        literal: format!("{}{}", prev_char, self.current_char),
+                    }
+                } else {
+                    token::Token {
+                        token_type: token::TokenType::BANG,
+                        literal: String::from(self.current_char),
+                    }
+                }
+            },
+            '*' => token::Token {
+                token_type: token::TokenType::ASTERISK,
+                literal: String::from(self.current_char),
+            },
+            '<' => token::Token {
+                token_type: token::TokenType::LT,
+                literal: String::from(self.current_char),
+            },
+            '>' => token::Token {
+                token_type: token::TokenType::GT,
+                literal: String::from(self.current_char),
+            },
+            '/' => token::Token {
+                token_type: token::TokenType::SLASH,
                 literal: String::from(self.current_char),
             },
             '{' => token::Token {
@@ -125,6 +179,11 @@ impl<'a> Lexer<'a> {
         match ident {
             "fn" => token::TokenType::FUNCTION,
             "let" => token::TokenType::LET,
+            "true" => token::TokenType::TRUE,
+            "false" => token::TokenType::FALSE,
+            "if" => token::TokenType::IF,
+            "else" => token::TokenType::ELSE,
+            "return" => token::TokenType::RETURN,
             _ => token::TokenType::IDENT,
         }
     }

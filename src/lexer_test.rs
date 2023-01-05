@@ -38,6 +38,18 @@ fn test_next_token_with_more_literals() {
         };
 
         let result = add(five, ten);
+
+        !-/*5; 
+
+        if (5 < 10) {
+            return true;
+        } else {
+            return false;
+        }
+
+        10 == 10;
+        10 != 9;
+
     "#;
 
     let tests = [
@@ -76,6 +88,37 @@ fn test_next_token_with_more_literals() {
         (token::TokenType::COMMA, ","),
         (token::TokenType::IDENT, "ten"),
         (token::TokenType::RPAREN, ")"),
+        (token::TokenType::SEMICOLON, ";"),
+        (token::TokenType::BANG, "!"),
+        (token::TokenType::MINUS, "-"),
+        (token::TokenType::SLASH, "/"),
+        (token::TokenType::ASTERISK, "*"),
+        (token::TokenType::INT, "5"),
+        (token::TokenType::SEMICOLON, ";"),
+        (token::TokenType::IF, "if"),
+        (token::TokenType::LPAREN, "("),
+        (token::TokenType::INT, "5"),
+        (token::TokenType::LT, "<"),
+        (token::TokenType::INT, "10"),
+        (token::TokenType::RPAREN, ")"),
+        (token::TokenType::LBRACE, "{"),
+        (token::TokenType::RETURN, "return"),
+        (token::TokenType::TRUE, "true"),
+        (token::TokenType::SEMICOLON, ";"),
+        (token::TokenType::RBRACE, "}"),
+        (token::TokenType::ELSE, "else"),
+        (token::TokenType::LBRACE, "{"),
+        (token::TokenType::RETURN, "return"),
+        (token::TokenType::FALSE, "false"),
+        (token::TokenType::SEMICOLON, ";"),
+        (token::TokenType::RBRACE, "}"),
+        (token::TokenType::INT, "10"),
+        (token::TokenType::EQ, "=="),
+        (token::TokenType::INT, "10"),
+        (token::TokenType::SEMICOLON, ";"),
+        (token::TokenType::INT, "10"),
+        (token::TokenType::NOTEQ, "!="),
+        (token::TokenType::INT, "9"),
         (token::TokenType::SEMICOLON, ";"),
         (token::TokenType::EOF, "\0"),
     ];
